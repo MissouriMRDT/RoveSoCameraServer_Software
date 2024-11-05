@@ -1,0 +1,38 @@
+name: clang-format Check
+on:
+  pull_request:
+    branches: ["development"]
+  push:
+    branches: ["development"]
+  workflow_dispatch:
+
+concurrency:
+  group: "clang-check"
+  cancel-in-progress: false
+
+jobs:
+  formatting-check:
+    name: Formatting Check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        path:
+          - check: "src"
+            exclude: ""
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Fix Dubious Ownership
+        run: git config --global --add safe.directory /opt/RoveSoCameraServer_Software
+
+      - name: Run clang-format style check
+        uses: jidicula/clang-format-action@v4.11.0
+        with:
+          clang-format-version: "16"
+          check-path: ${{ matrix.path['check'] }}
+          exclude-regex: ${{ matrix.path['exclude'] }}
+          fallback-style: "Microsoft"
