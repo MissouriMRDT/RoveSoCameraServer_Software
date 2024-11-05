@@ -86,4 +86,4 @@ class CameraHandler
         BasicCam* GetBasicCam(BasicCamName eCameraName);
 };
 
-#endif
+#endif    // CAMERA_HANDLER_H

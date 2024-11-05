@@ -37,8 +37,8 @@
 
 #include "./RoveSoCameraServerConstants.h"
 
-#ifndef AUTONOMY_LOGGING_H
-#define AUTONOMY_LOGGING_H
+#ifndef ROVESOCAMERA_LOGGING_H
+#define ROVESOCAMERA_LOGGING_H
 
 /******************************************************************************
  * @brief Logging Levels:
@@ -475,4 +475,4 @@ namespace logging
     };
 
 }    // namespace logging
-#endif    // AUTONOMY_LOGGING_H
+#endif    // ROVESOCAMERA_LOGGING_H

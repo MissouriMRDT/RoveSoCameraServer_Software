@@ -8,8 +8,8 @@
  * @copyright Copyright Mars Rover Design Team 2024 - All Rights Reserved
  ******************************************************************************/
 
-#ifndef AUTONOMY_GLOBALS_H
-#define AUTONOMY_GLOBALS_H
+#ifndef ROVESOCAMERA_GLOBALS_H
+#define ROVESOCAMERA_GLOBALS_H
 
 #include "handlers/CameraHandler.h"
 
@@ -37,4 +37,4 @@ namespace globals
     extern CameraHandler* g_pCameraHandler;    // Global Camera Handler
 }    // namespace globals
 
-#endif    // AUTONOMY_GLOBALS_H
+#endif    // ROVESOCAMERA_GLOBALS_H
