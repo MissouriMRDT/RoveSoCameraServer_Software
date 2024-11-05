@@ -37,19 +37,6 @@
 ## Introduction
 RoveSoCameraServer_Software is the dedicated software stack for operating the RoveSoCameraServer_Hardware. It supports streaming from multiple camera feeds and provides robust tools for managing camera inputs and outputs. For testing purposes, this software is compatible with `v4l2loopback` on Linux, allowing for virtual camera simulation on non-hardware setups.
 
-## Table of Contents
-
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Testing with v4l2loopback](#testing-with-v4l2loopback)
-  - [Installing v4l2loopback from GitHub with Increased Device Limit](#installing-v4l2loopback-from-github-with-increased-device-limit)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## API Documentation
 
 Our documentation is automatically generated via [Doxygen](https://doxygen.nl/) on each commit to the `development` branch. Ensure you use the correct documentation templates to keep the documentation consistent.
