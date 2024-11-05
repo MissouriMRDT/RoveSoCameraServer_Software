@@ -50,6 +50,12 @@ RoveSoCameraServer_Software is the dedicated software stack for operating the Ro
 - [Contributing](#contributing)
 - [License](#license)
 
+## API Documentation
+
+Our documentation is automatically generated via [Doxygen](https://doxygen.nl/) on each commit to the `development` branch. Ensure you use the correct documentation templates to keep the documentation consistent.
+
+**[Click here for full API documentation.](https://missourimrdt.github.io/RoveSoCameraServer_Software/)**
+
 ## Features
 
 - Integrates seamlessly with RoveSoCameraServer_Hardware.
