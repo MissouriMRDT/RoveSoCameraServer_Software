@@ -1,5 +1,40 @@
-# RoveSoCameraServer_Software
+\mainpage
 
+<div align="center">
+  <a href="https://github.com/missourimrdt/rovesocameraserver_software">
+    <img width="125" src="https://i.postimg.cc/XYtdp84Z/logo.png" alt="Mars Rover Design Team Logo">
+  </a>
+  <h1>RoveSoCameraServer Software C++</h1>
+  <p><b>C++ stack for streaming and managing multiple camera feeds on RoveSoCameraServer_Hardware, with virtual testing support.</b></p>
+  <div>
+    <a href="https://github.com/MissouriMRDT/autonomy_software/pkgs/container/autonomy-jammy">
+      <img src="https://img.shields.io/badge/Ubuntu_Jammy-latest-orange" alt="jammy-pkg" />
+    </a>
+    <a href="https://github.com/MissouriMRDT/autonomy_software/pkgs/container/autonomy-jetpack">
+      <img src="https://img.shields.io/badge/NVIDIA_JetPack_6-latest-orange" alt="jetpack-pkg" />
+    </a>
+  </div>
+  <div>
+    <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">
+      <img src="https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-round" alt="license" />
+    </a>
+    <a href="https://en.cppreference.com/w/cpp/20">
+      <img src="https://img.shields.io/badge/language-C%2B%2B20-blue.svg?style=flat-round" alt="language" />
+    </a>
+  </div>
+  <div>
+    <a href="https://github.com/MissouriMRDT/rovesocameraserver_software/actions/workflows/deploy_doxygen.yml">
+      <img src="https://img.shields.io/github/actions/workflow/status/missourimrdt/rovesocameraserver_software/deploy_doxygen.yml?branch=development&label=Docs&style=flat-round" alt="docs-ci" />
+    </a>
+    <a href="https://github.com/MissouriMRDT/rovesocameraserver_software/actions/workflows/clang_check.yml">
+      <img src="https://img.shields.io/github/actions/workflow/status/missourimrdt/rovesocameraserver_software/clang_check.yml?branch=development&label=Clang&style=flat-round" alt="clang-ci" />
+    </a>
+  </div>
+</div>
+
+---
+
+## Introduction
 RoveSoCameraServer_Software is the dedicated software stack for operating the RoveSoCameraServer_Hardware. It supports streaming from multiple camera feeds and provides robust tools for managing camera inputs and outputs. For testing purposes, this software is compatible with `v4l2loopback` on Linux, allowing for virtual camera simulation on non-hardware setups.
 
 ## Table of Contents

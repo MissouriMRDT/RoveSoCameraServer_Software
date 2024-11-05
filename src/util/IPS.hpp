@@ -258,4 +258,5 @@ class IPS
             m_dqIPSHistory.clear();
         }
 };
-#endif
+
+#endif    // IPS_HPP
