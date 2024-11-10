@@ -131,6 +131,18 @@ CameraHandler::CameraHandler()
 
     // Initialize recording handler for cameras.
     m_pRecordingHandler = new RecordingHandler(RecordingHandler::RecordingMode::eCameraHandler);
+
+    // Initialize streaming handlers for cameras.
+    m_pDriveCamLeftStream   = new StreamingHandler(m_pDriveCamLeft, "127.0.0.1", 1180);
+    m_pDriveCamRightStream  = new StreamingHandler(m_pDriveCamRight, "127.0.0.1", 1181);
+    m_pGimbalCamLeftStream  = new StreamingHandler(m_pGimbalCamLeft, "127.0.0.1", 1182);
+    m_pGimbalCamRightStream = new StreamingHandler(m_pGimbalCamRight, "127.0.0.1", 1183);
+    m_pBackCamStream        = new StreamingHandler(m_pBackCam, "127.0.0.1", 1184);
+    m_pAuxCamera1Stream     = new StreamingHandler(m_pAuxCamera1, "127.0.0.1", 1185);
+    m_pAuxCamera2Stream     = new StreamingHandler(m_pAuxCamera2, "127.0.0.1", 1186);
+    m_pAuxCamera3Stream     = new StreamingHandler(m_pAuxCamera3, "127.0.0.1", 1187);
+    m_pAuxCamera4Stream     = new StreamingHandler(m_pAuxCamera4, "127.0.0.1", 1188);
+    m_pMicroscopeStream     = new StreamingHandler(m_pMicroscope, "127.0.0.1", 1189);
 }
 
 /******************************************************************************
@@ -144,7 +156,22 @@ CameraHandler::~CameraHandler()
     // Signal and wait for cameras to stop.
     this->StopAllCameras();
 
-    // Delete dynamic memory.
+    // Delete streams dynamic memory.
+    delete m_pDriveCamLeftStream;
+    delete m_pDriveCamRightStream;
+    delete m_pGimbalCamLeftStream;
+    delete m_pGimbalCamRightStream;
+    delete m_pBackCamStream;
+    delete m_pAuxCamera1Stream;
+    delete m_pAuxCamera2Stream;
+    delete m_pAuxCamera3Stream;
+    delete m_pAuxCamera4Stream;
+    delete m_pMicroscopeStream;
+
+    // Delete recording handler dynamic memory.
+    delete m_pRecordingHandler;
+
+    // Delete cameras dynamic memory.
     delete m_pDriveCamLeft;
     delete m_pDriveCamRight;
     delete m_pGimbalCamLeft;
@@ -155,20 +182,86 @@ CameraHandler::~CameraHandler()
     delete m_pAuxCamera3;
     delete m_pAuxCamera4;
     delete m_pMicroscope;
-    delete m_pRecordingHandler;
 
-    // Set dangling pointers to nullptr.
-    m_pDriveCamLeft     = nullptr;
-    m_pDriveCamRight    = nullptr;
-    m_pGimbalCamLeft    = nullptr;
-    m_pGimbalCamRight   = nullptr;
-    m_pBackCam          = nullptr;
-    m_pAuxCamera1       = nullptr;
-    m_pAuxCamera2       = nullptr;
-    m_pAuxCamera3       = nullptr;
-    m_pAuxCamera4       = nullptr;
-    m_pMicroscope       = nullptr;
+    // Set streams dangling pointers to nullptr.
+    m_pDriveCamLeftStream   = nullptr;
+    m_pDriveCamRightStream  = nullptr;
+    m_pGimbalCamLeftStream  = nullptr;
+    m_pGimbalCamRightStream = nullptr;
+    m_pBackCamStream        = nullptr;
+    m_pAuxCamera1Stream     = nullptr;
+    m_pAuxCamera2Stream     = nullptr;
+    m_pAuxCamera3Stream     = nullptr;
+    m_pAuxCamera4Stream     = nullptr;
+    m_pMicroscopeStream     = nullptr;
+
+    // Set recording handler dangling pointer to nullptr.
     m_pRecordingHandler = nullptr;
+
+    // Set cameras dangling pointers to nullptr.
+    m_pDriveCamLeft   = nullptr;
+    m_pDriveCamRight  = nullptr;
+    m_pGimbalCamLeft  = nullptr;
+    m_pGimbalCamRight = nullptr;
+    m_pBackCam        = nullptr;
+    m_pAuxCamera1     = nullptr;
+    m_pAuxCamera2     = nullptr;
+    m_pAuxCamera3     = nullptr;
+    m_pAuxCamera4     = nullptr;
+    m_pMicroscope     = nullptr;
+}
+
+void CameraHandler::StartCameras(bool bDriveCamLeft,
+                                 bool bDriveCamRight,
+                                 bool bGimbalCamLeft,
+                                 bool bGimbalCamRight,
+                                 bool bBackCam,
+                                 bool bAuxCamera1,
+                                 bool bAuxCamera2,
+                                 bool bAuxCamera3,
+                                 bool bAuxCamera4,
+                                 bool bMicroscope)
+{
+    if (bDriveCamLeft)
+    {
+        m_pDriveCamLeft->Start();
+    }
+    if (bDriveCamRight)
+    {
+        m_pDriveCamRight->Start();
+    }
+    if (bGimbalCamLeft)
+    {
+        m_pGimbalCamLeft->Start();
+    }
+    if (bGimbalCamRight)
+    {
+        m_pGimbalCamRight->Start();
+    }
+    if (bBackCam)
+    {
+        m_pBackCam->Start();
+    }
+    if (bAuxCamera1)
+    {
+        m_pAuxCamera1->Start();
+    }
+    if (bAuxCamera2)
+    {
+        m_pAuxCamera2->Start();
+    }
+    if (bAuxCamera3)
+    {
+        m_pAuxCamera3->Start();
+    }
+    if (bAuxCamera4)
+    {
+        m_pAuxCamera4->Start();
+    }
+    if (bMicroscope)
+    {
+        m_pMicroscope->Start();
+    }
 }
 
 /******************************************************************************
@@ -179,19 +272,7 @@ CameraHandler::~CameraHandler()
  ******************************************************************************/
 void CameraHandler::StartAllCameras()
 {
-    // Start on-rover cams.
-    m_pDriveCamLeft->Start();
-    m_pDriveCamRight->Start();
-    m_pGimbalCamLeft->Start();
-    m_pGimbalCamRight->Start();
-    m_pBackCam->Start();
-
-    // Start auxiliary system cams.
-    m_pAuxCamera1->Start();
-    m_pAuxCamera2->Start();
-    m_pAuxCamera3->Start();
-    m_pAuxCamera4->Start();
-    m_pMicroscope->Start();
+    StartCameras();
 }
 
 /******************************************************************************
@@ -207,6 +288,129 @@ void CameraHandler::StartRecording()
 }
 
 /******************************************************************************
+ * @brief Signal the StreamingHandler to start streaming video feeds from the CameraHandler.
+ *
+ * @author Eli Byrd (edbgkk@mst.edu)
+ * @date 2024-11-10
+ ******************************************************************************/
+void CameraHandler::StartStreaming(bool bDriveCamLeft,
+                                   bool bDriveCamRight,
+                                   bool bGimbalCamLeft,
+                                   bool bGimbalCamRight,
+                                   bool bBackCam,
+                                   bool bAuxCamera1,
+                                   bool bAuxCamera2,
+                                   bool bAuxCamera3,
+                                   bool bAuxCamera4,
+                                   bool bMicroscope)
+{
+    // Start streaming handlers.
+    if (bDriveCamLeft)
+    {
+        m_pDriveCamLeftStream->Start();
+    }
+    if (bDriveCamRight)
+    {
+        m_pDriveCamRightStream->Start();
+    }
+    if (bGimbalCamLeft)
+    {
+        m_pGimbalCamLeftStream->Start();
+    }
+    if (bGimbalCamRight)
+    {
+        m_pGimbalCamRightStream->Start();
+    }
+    if (bBackCam)
+    {
+        m_pBackCamStream->Start();
+    }
+    if (bAuxCamera1)
+    {
+        m_pAuxCamera1Stream->Start();
+    }
+    if (bAuxCamera2)
+    {
+        m_pAuxCamera2Stream->Start();
+    }
+    if (bAuxCamera3)
+    {
+        m_pAuxCamera3Stream->Start();
+    }
+    if (bAuxCamera4)
+    {
+        m_pAuxCamera4Stream->Start();
+    }
+    if (bMicroscope)
+    {
+        m_pMicroscopeStream->Start();
+    }
+}
+
+void CameraHandler::StopCameras(bool bDriveCamLeft,
+                                bool bDriveCamRight,
+                                bool bGimbalCamLeft,
+                                bool bGimbalCamRight,
+                                bool bBackCam,
+                                bool bAuxCamera1,
+                                bool bAuxCamera2,
+                                bool bAuxCamera3,
+                                bool bAuxCamera4,
+                                bool bMicroscope)
+{
+    if (bDriveCamLeft)
+    {
+        m_pDriveCamLeft->RequestStop();
+        m_pDriveCamLeft->Join();
+    }
+    if (bDriveCamRight)
+    {
+        m_pDriveCamRight->RequestStop();
+        m_pDriveCamRight->Join();
+    }
+    if (bGimbalCamLeft)
+    {
+        m_pGimbalCamLeft->RequestStop();
+        m_pGimbalCamLeft->Join();
+    }
+    if (bGimbalCamRight)
+    {
+        m_pGimbalCamRight->RequestStop();
+        m_pGimbalCamRight->Join();
+    }
+    if (bBackCam)
+    {
+        m_pBackCam->RequestStop();
+        m_pBackCam->Join();
+    }
+    if (bAuxCamera1)
+    {
+        m_pAuxCamera1->RequestStop();
+        m_pAuxCamera1->Join();
+    }
+    if (bAuxCamera2)
+    {
+        m_pAuxCamera2->RequestStop();
+        m_pAuxCamera2->Join();
+    }
+    if (bAuxCamera3)
+    {
+        m_pAuxCamera3->RequestStop();
+        m_pAuxCamera3->Join();
+    }
+    if (bAuxCamera4)
+    {
+        m_pAuxCamera4->RequestStop();
+        m_pAuxCamera4->Join();
+    }
+    if (bMicroscope)
+    {
+        m_pMicroscope->RequestStop();
+        m_pMicroscope->Join();
+    }
+}
+
+/******************************************************************************
  * @brief Signals all cameras to stop their threads.
  *
  * @author Eli Byrd (edbgkk@mst.edu)
@@ -214,33 +418,14 @@ void CameraHandler::StartRecording()
  ******************************************************************************/
 void CameraHandler::StopAllCameras()
 {
+    // Stop streaming handlers.
+    StopStreaming();
+
     // Stop recording handler.
-    m_pRecordingHandler->RequestStop();
-    m_pRecordingHandler->Join();
+    StopRecording();
 
-    // Stop on-rover cams.
-    m_pDriveCamLeft->RequestStop();
-    m_pDriveCamLeft->Join();
-    m_pDriveCamRight->RequestStop();
-    m_pDriveCamRight->Join();
-    m_pGimbalCamLeft->RequestStop();
-    m_pGimbalCamLeft->Join();
-    m_pGimbalCamRight->RequestStop();
-    m_pGimbalCamRight->Join();
-    m_pBackCam->RequestStop();
-    m_pBackCam->Join();
-
-    // Stop auxiliary system cams.
-    m_pAuxCamera1->RequestStop();
-    m_pAuxCamera1->Join();
-    m_pAuxCamera2->RequestStop();
-    m_pAuxCamera2->Join();
-    m_pAuxCamera3->RequestStop();
-    m_pAuxCamera3->Join();
-    m_pAuxCamera4->RequestStop();
-    m_pAuxCamera4->Join();
-    m_pMicroscope->RequestStop();
-    m_pMicroscope->Join();
+    // Stop cameras.
+    StopCameras();
 }
 
 /******************************************************************************
@@ -254,6 +439,70 @@ void CameraHandler::StopRecording()
     // Stop recording handler.
     m_pRecordingHandler->RequestStop();
     m_pRecordingHandler->Join();
+}
+
+void CameraHandler::StopStreaming(bool bDriveCamLeft,
+                                  bool bDriveCamRight,
+                                  bool bGimbalCamLeft,
+                                  bool bGimbalCamRight,
+                                  bool bBackCam,
+                                  bool bAuxCamera1,
+                                  bool bAuxCamera2,
+                                  bool bAuxCamera3,
+                                  bool bAuxCamera4,
+                                  bool bMicroscope)
+{
+    // Stop streaming handlers.
+    if (bDriveCamLeft)
+    {
+        m_pDriveCamLeftStream->RequestStop();
+        m_pDriveCamLeftStream->Join();
+    }
+    if (bDriveCamRight)
+    {
+        m_pDriveCamRightStream->RequestStop();
+        m_pDriveCamRightStream->Join();
+    }
+    if (bGimbalCamLeft)
+    {
+        m_pGimbalCamLeftStream->RequestStop();
+        m_pGimbalCamLeftStream->Join();
+    }
+    if (bGimbalCamRight)
+    {
+        m_pGimbalCamRightStream->RequestStop();
+        m_pGimbalCamRightStream->Join();
+    }
+    if (bBackCam)
+    {
+        m_pBackCamStream->RequestStop();
+        m_pBackCamStream->Join();
+    }
+    if (bAuxCamera1)
+    {
+        m_pAuxCamera1Stream->RequestStop();
+        m_pAuxCamera1Stream->Join();
+    }
+    if (bAuxCamera2)
+    {
+        m_pAuxCamera2Stream->RequestStop();
+        m_pAuxCamera2Stream->Join();
+    }
+    if (bAuxCamera3)
+    {
+        m_pAuxCamera3Stream->RequestStop();
+        m_pAuxCamera3Stream->Join();
+    }
+    if (bAuxCamera4)
+    {
+        m_pAuxCamera4Stream->RequestStop();
+        m_pAuxCamera4Stream->Join();
+    }
+    if (bMicroscope)
+    {
+        m_pMicroscopeStream->RequestStop();
+        m_pMicroscopeStream->Join();
+    }
 }
 
 /******************************************************************************
@@ -281,5 +530,24 @@ BasicCam* CameraHandler::GetBasicCam(BasicCamName eCameraName)
         case BasicCamName::eAuxCamera4: return m_pAuxCamera4;            // Return the fourth auxiliary cam.
         case BasicCamName::eMicroscope: return m_pMicroscope;            // Return the microscope cam.
         default: return m_pDriveCamLeft;
+    }
+}
+
+StreamingHandler* CameraHandler::GetStreamingHandler(BasicCamName eCameraName)
+{
+    // Determine which streaming handler should be returned.
+    switch (eCameraName)
+    {
+        case BasicCamName::eDriveCamLeft: return m_pDriveCamLeftStream;        // Return the left drive cam stream.
+        case BasicCamName::eDriveCamRight: return m_pDriveCamRightStream;      // Return the right drive cam stream.
+        case BasicCamName::eGimbalCamLeft: return m_pGimbalCamLeftStream;      // Return the left gimbal cam stream.
+        case BasicCamName::eGimbalCamRight: return m_pGimbalCamRightStream;    // Return the right gimbal cam stream.
+        case BasicCamName::eBackCam: return m_pBackCamStream;                  // Return the back cam stream.
+        case BasicCamName::eAuxCamera1: return m_pAuxCamera1Stream;            // Return the first auxiliary cam stream.
+        case BasicCamName::eAuxCamera2: return m_pAuxCamera2Stream;            // Return the second auxiliary cam stream.
+        case BasicCamName::eAuxCamera3: return m_pAuxCamera3Stream;            // Return the third auxiliary cam stream.
+        case BasicCamName::eAuxCamera4: return m_pAuxCamera4Stream;            // Return the fourth auxiliary cam stream.
+        case BasicCamName::eMicroscope: return m_pMicroscopeStream;            // Return the microscope cam stream.
+        default: return m_pDriveCamLeftStream;
     }
 }

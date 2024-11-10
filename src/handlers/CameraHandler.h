@@ -13,6 +13,7 @@
 
 #include "../vision/cameras/BasicCam.h"
 #include "RecordingHandler.h"
+#include "StreamingHandler.h"
 
 /// \cond
 #include <opencv2/core.hpp>
@@ -46,6 +47,16 @@ class CameraHandler
         BasicCam* m_pAuxCamera4;
         BasicCam* m_pMicroscope;
         RecordingHandler* m_pRecordingHandler;
+        StreamingHandler* m_pDriveCamLeftStream;
+        StreamingHandler* m_pDriveCamRightStream;
+        StreamingHandler* m_pGimbalCamLeftStream;
+        StreamingHandler* m_pGimbalCamRightStream;
+        StreamingHandler* m_pBackCamStream;
+        StreamingHandler* m_pAuxCamera1Stream;
+        StreamingHandler* m_pAuxCamera2Stream;
+        StreamingHandler* m_pAuxCamera3Stream;
+        StreamingHandler* m_pAuxCamera4Stream;
+        StreamingHandler* m_pMicroscopeStream;
 
     public:
         /////////////////////////////////////////
@@ -74,16 +85,57 @@ class CameraHandler
 
         CameraHandler();
         ~CameraHandler();
+        void StartCameras(bool bDriveCamLeft   = true,
+                          bool bDriveCamRight  = true,
+                          bool bGimbalCamLeft  = true,
+                          bool bGimbalCamRight = true,
+                          bool bBackCam        = true,
+                          bool bAuxCamera1     = true,
+                          bool bAuxCamera2     = true,
+                          bool bAuxCamera3     = true,
+                          bool bAuxCamera4     = true,
+                          bool bMicroscope     = true);
         void StartAllCameras();
         void StartRecording();
+        void StartStreaming(bool bDriveCamLeft   = true,
+                            bool bDriveCamRight  = true,
+                            bool bGimbalCamLeft  = true,
+                            bool bGimbalCamRight = true,
+                            bool bBackCam        = true,
+                            bool bAuxCamera1     = true,
+                            bool bAuxCamera2     = true,
+                            bool bAuxCamera3     = true,
+                            bool bAuxCamera4     = true,
+                            bool bMicroscope     = true);
+        void StopCameras(bool bDriveCamLeft   = true,
+                         bool bDriveCamRight  = true,
+                         bool bGimbalCamLeft  = true,
+                         bool bGimbalCamRight = true,
+                         bool bBackCam        = true,
+                         bool bAuxCamera1     = true,
+                         bool bAuxCamera2     = true,
+                         bool bAuxCamera3     = true,
+                         bool bAuxCamera4     = true,
+                         bool bMicroscope     = true);
         void StopAllCameras();
         void StopRecording();
+        void StopStreaming(bool bDriveCamLeft   = true,
+                           bool bDriveCamRight  = true,
+                           bool bGimbalCamLeft  = true,
+                           bool bGimbalCamRight = true,
+                           bool bBackCam        = true,
+                           bool bAuxCamera1     = true,
+                           bool bAuxCamera2     = true,
+                           bool bAuxCamera3     = true,
+                           bool bAuxCamera4     = true,
+                           bool bMicroscope     = true);
 
         /////////////////////////////////////////
         // Accessors.
         /////////////////////////////////////////
 
         BasicCam* GetBasicCam(BasicCamName eCameraName);
+        StreamingHandler* GetStreamingHandler(BasicCamName eCameraName);
 };
 
 #endif    // CAMERA_HANDLER_H

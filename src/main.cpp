@@ -113,10 +113,12 @@ int main()
     // Initialize handlers.
     globals::g_pCameraHandler = new CameraHandler();
 
-    // Start camera and detection handlers.
-    globals::g_pCameraHandler->StartAllCameras();
+    // Start camera handlers.
+    globals::g_pCameraHandler->StartCameras();
     // Enable Recording on Handlers.
     globals::g_pCameraHandler->StartRecording();
+    // Enable Streaming on Handlers.
+    globals::g_pCameraHandler->StartStreaming();
 
     /////////////////////////////////////////
     // Declare local variables used in main loop.
@@ -133,7 +135,20 @@ int main()
     BasicCam* pAuxCamera4     = globals::g_pCameraHandler->GetBasicCam(CameraHandler::BasicCamName::eAuxCamera4);
     BasicCam* pMicroscope     = globals::g_pCameraHandler->GetBasicCam(CameraHandler::BasicCamName::eMicroscope);
 
-    IPS IterPerSecond         = IPS();
+    // Get Stream pointers.
+    StreamingHandler* pDriveCamLeftStream   = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eDriveCamLeft);
+    StreamingHandler* pDriveCamRightStream  = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eDriveCamRight);
+    StreamingHandler* pGimbalCamLeftStream  = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eGimbalCamLeft);
+    StreamingHandler* pGimbalCamRightStream = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eGimbalCamRight);
+    StreamingHandler* pBackCamStream        = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eBackCam);
+    StreamingHandler* pAuxCamera1Stream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eAuxCamera1);
+    StreamingHandler* pAuxCamera2Stream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eAuxCamera2);
+    StreamingHandler* pAuxCamera3Stream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eAuxCamera3);
+    StreamingHandler* pAuxCamera4Stream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eAuxCamera4);
+    StreamingHandler* pMicroscopeStream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eMicroscope);
+
+    // Initialize the frame rate counter.
+    IPS IterPerSecond = IPS();
 
     /*
         This while loop is the main periodic loop for the RoveSoCameraServer program.
@@ -146,6 +161,7 @@ int main()
         // Get FPS of all cameras and detectors and construct the info into a string.
         szMainInfo += "\n--------[ Threads FPS ]--------\n";
         szMainInfo += "Main Process FPS: " + std::to_string(IterPerSecond.GetExactIPS()) + "\n";
+        szMainInfo += "\n--------[ Camera FPS ]--------\n";
         szMainInfo += "DriveCamLeft FPS: " + std::to_string(pDriveCamLeft->GetIPS().GetExactIPS()) + "\n";
         szMainInfo += "DriveCamRight FPS: " + std::to_string(pDriveCamRight->GetIPS().GetExactIPS()) + "\n";
         szMainInfo += "GimbalCamLeft FPS: " + std::to_string(pGimbalCamLeft->GetIPS().GetExactIPS()) + "\n";
@@ -156,7 +172,19 @@ int main()
         szMainInfo += "AuxCamera3 FPS: " + std::to_string(pAuxCamera3->GetIPS().GetExactIPS()) + "\n";
         szMainInfo += "AuxCamera4 FPS: " + std::to_string(pAuxCamera4->GetIPS().GetExactIPS()) + "\n";
         szMainInfo += "Microscope FPS: " + std::to_string(pMicroscope->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "\nRoveCommUDP FPS: " + std::to_string(network::g_pRoveCommTCPNode->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "\n--------[ Streaming FPS ]--------\n";
+        szMainInfo += "DriveCamLeft Stream FPS: " + std::to_string(pDriveCamLeftStream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "DriveCamRight Stream FPS: " + std::to_string(pDriveCamRightStream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "GimbalCamLeft Stream FPS: " + std::to_string(pGimbalCamLeftStream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "GimbalCamRight Stream FPS: " + std::to_string(pGimbalCamRightStream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "BackCam Stream FPS: " + std::to_string(pBackCamStream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "AuxCamera1 Stream FPS: " + std::to_string(pAuxCamera1Stream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "AuxCamera2 Stream FPS: " + std::to_string(pAuxCamera2Stream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "AuxCamera3 Stream FPS: " + std::to_string(pAuxCamera3Stream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "AuxCamera4 Stream FPS: " + std::to_string(pAuxCamera4Stream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "Microscope Stream FPS: " + std::to_string(pMicroscopeStream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "\n--------[ RoveComm FPS ]--------\n";
+        szMainInfo += "RoveCommUDP FPS: " + std::to_string(network::g_pRoveCommTCPNode->GetIPS().GetExactIPS()) + "\n";
         szMainInfo += "RoveCommTCP FPS: " + std::to_string(network::g_pRoveCommTCPNode->GetIPS().GetExactIPS()) + "\n";
 
         // Submit logger message.

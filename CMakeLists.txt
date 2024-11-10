@@ -189,9 +189,23 @@ set(ROVESOCAMERASERVER_LIBRARIES  Threads::Threads
                                   RoveComm_CPP
                                   quill::quill
                                   ${OpenCV_LIBS}
-                                  gcov
 )
-target_link_libraries(${EXE_NAME} PRIVATE ${ROVESOCAMERASERVER_LIBRARIES})
+set(FFMPEG_LIB_DIR /usr/local/lib)
+set(FFMPEG_LIBS
+    ${FFMPEG_LIB_DIR}/libavformat.a
+    ${FFMPEG_LIB_DIR}/libavcodec.a
+    ${FFMPEG_LIB_DIR}/libavutil.a
+    ${FFMPEG_LIB_DIR}/libswscale.a
+    ${FFMPEG_LIB_DIR}/libswresample.a
+    ${FFMPEG_LIB_DIR}/libavdevice.a
+    ${FFMPEG_LIB_DIR}/libavfilter.a
+    ${FFMPEG_LIB_DIR}/libpostproc.a
+)
+
+set(ADDITIONAL_LIBS -lz -lm -lpthread -lx264 -ldl -lX11 -llzma -ldrm)
+
+target_link_libraries(${EXE_NAME} PRIVATE ${ROVESOCAMERASERVER_LIBRARIES} ${FFMPEG_LIBS} ${ADDITIONAL_LIBS})
+
 
 ####################################################################################################################
 ##                                             Installation and Tests                                             ##
