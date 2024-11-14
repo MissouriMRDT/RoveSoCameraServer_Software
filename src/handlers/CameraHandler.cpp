@@ -133,16 +133,16 @@ CameraHandler::CameraHandler()
     m_pRecordingHandler = new RecordingHandler(RecordingHandler::RecordingMode::eCameraHandler);
 
     // Initialize streaming handlers for cameras.
-    m_pDriveCamLeftStream   = new StreamingHandler(m_pDriveCamLeft, "127.0.0.1", 1180);
-    m_pDriveCamRightStream  = new StreamingHandler(m_pDriveCamRight, "127.0.0.1", 1181);
-    m_pGimbalCamLeftStream  = new StreamingHandler(m_pGimbalCamLeft, "127.0.0.1", 1182);
-    m_pGimbalCamRightStream = new StreamingHandler(m_pGimbalCamRight, "127.0.0.1", 1183);
-    m_pBackCamStream        = new StreamingHandler(m_pBackCam, "127.0.0.1", 1184);
-    m_pAuxCamera1Stream     = new StreamingHandler(m_pAuxCamera1, "127.0.0.1", 1185);
-    m_pAuxCamera2Stream     = new StreamingHandler(m_pAuxCamera2, "127.0.0.1", 1186);
-    m_pAuxCamera3Stream     = new StreamingHandler(m_pAuxCamera3, "127.0.0.1", 1187);
-    m_pAuxCamera4Stream     = new StreamingHandler(m_pAuxCamera4, "127.0.0.1", 1188);
-    m_pMicroscopeStream     = new StreamingHandler(m_pMicroscope, "127.0.0.1", 1189);
+    m_pDriveCamLeftStream   = new FFmpegUDPCameraStreamer(m_pDriveCamLeft, "239.0.0.1", 50000);
+    m_pDriveCamRightStream  = new FFmpegUDPCameraStreamer(m_pDriveCamRight, "239.0.0.2", 50000);
+    m_pGimbalCamLeftStream  = new FFmpegUDPCameraStreamer(m_pGimbalCamLeft, "239.0.0.3", 50000);
+    m_pGimbalCamRightStream = new FFmpegUDPCameraStreamer(m_pGimbalCamRight, "239.0.0.4", 50000);
+    m_pBackCamStream        = new FFmpegUDPCameraStreamer(m_pBackCam, "239.0.0.5", 50000);
+    m_pAuxCamera1Stream     = new FFmpegUDPCameraStreamer(m_pAuxCamera1, "239.0.0.6", 50000);
+    m_pAuxCamera2Stream     = new FFmpegUDPCameraStreamer(m_pAuxCamera2, "239.0.0.7", 50000);
+    m_pAuxCamera3Stream     = new FFmpegUDPCameraStreamer(m_pAuxCamera3, "239.0.0.8", 50000);
+    m_pAuxCamera4Stream     = new FFmpegUDPCameraStreamer(m_pAuxCamera4, "239.0.0.9", 50000);
+    m_pMicroscopeStream     = new FFmpegUDPCameraStreamer(m_pMicroscope, "239.0.0.10", 50000);
 }
 
 /******************************************************************************
@@ -533,7 +533,7 @@ BasicCam* CameraHandler::GetBasicCam(BasicCamName eCameraName)
     }
 }
 
-StreamingHandler* CameraHandler::GetStreamingHandler(BasicCamName eCameraName)
+FFmpegUDPCameraStreamer* CameraHandler::GetFFmpegUDPCameraStreamer(BasicCamName eCameraName)
 {
     // Determine which streaming handler should be returned.
     switch (eCameraName)

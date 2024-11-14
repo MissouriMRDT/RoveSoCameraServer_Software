@@ -1,17 +1,13 @@
 {
     "name": "MRDT RoveSoCameraServer C++",
     "runArgs": [
-        // Name container.
         // "--name",
         // "RoveSoCamera_Server_Software_devcontainer",
-        // Configure container to use the same network stack as the host machine.
         "--network",
         "host",
-        // Add all available GPUs
         "--gpus",
         "all",
         // "--runtime=nvidia",
-        // Grants permission to the container to access USBs.
         "--privileged",
         "-v",
         "/dev/bus/usb:/dev/bus/usb",
@@ -26,28 +22,19 @@
         "-e",
         "XDG_RUNTIME_DIR"
     ],
-    // Mount shared workspace volumes. Bind from host machine to container.
     "mounts": [
         "type=bind,readonly,source=/etc/localtime,target=/etc/localtime"
     ],
-    "image": "ghcr.io/missourimrdt/autonomy-jammy:latest",
+    // "image": "ghcr.io/missourimrdt/autonomy-jammy:2024-11-11-16-25-30",
     // "image": "ghcr.io/missourimrdt/autonomy-jetpack:latest",
-    // "build": {
-    //     "dockerfile": "Dockerfile_Jammy"
-    //     // "dockerfile": "Dockerfile_JetPack"
-    // },
-    // Features to add to the dev container. More info: https://containers.dev/features.
-    // "features": {},
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
-    // "forwardPorts": [],
-    // Use 'postCreateCommand' to run commands after the container is created.
+    "build": {
+        "dockerfile": "Dockerfile_Jammy"
+        //  "dockerfile": "Dockerfile_JetPack"
+    },
     "postStartCommand": "git config --global --add safe.directory \"*\"",
     "postCreateCommand": "echo 'Welcome to the Mars Rover Design Team, RoveSoCamera Server Software Development Environment!'",
-    // Configure tool-specific properties.
     "customizations": {
-        // Configure properties specific to VS Code.
         "vscode": {
-            // Add the IDs of extensions you want installed when the container is created.
             "extensions": [
                 "ms-vscode.cpptools",
                 "twxs.cmake",
@@ -60,10 +47,9 @@
                 "cschlosser.doxdocgen",
                 "gruntfuggly.todo-tree",
                 "streetsidesoftware.code-spell-checker",
-                "vscode-icons-team.vscode-icons",
+                "vscode-icons-team.vscode-icons"
             ],
             "settings": {
-                // VSCode settings.
                 "editor.acceptSuggestionOnEnter": "off",
                 "editor.formatOnPaste": true,
                 "editor.formatOnSave": true,
@@ -80,11 +66,9 @@
                     "**/docs": true
                 },
                 "extensions.ignoreRecommendations": true,
-                // Git settings.
                 "git.autofetch": true,
                 "git.terminalAuthentication": false,
                 "git.detectSubmodules": true,
-                // C/C++ extension settings.
                 "C_Cpp.formatting": "clangFormat",
                 "C_Cpp.default.compilerPath": "/usr/bin/g++",
                 "C_Cpp.default.cppStandard": "c++20",
@@ -94,8 +78,6 @@
                     "./external/threadpool/include/**",
                     "/usr/local/include/opencv4",
                     "/usr/local/include/opencv4/**",
-                    "/usr/local/zed/include",
-                    "/usr/local/zed/include/**",
                     "/usr/local/cuda/include",
                     "/usr/local/include/quill",
                     "/usr/local/include/quill/**",
@@ -103,23 +85,21 @@
                     "/usr/local/include/gmock/**",
                     "/usr/local/include/gtest",
                     "/usr/local/include/gtest/**",
-                    "/usr/local/include/GeographicLib",
-                    "/usr/local/include/GeographicLib/**",
-                    "/usr/local/include/tensorflow/lite",
-                    "/usr/local/include/tensorflow/lite/**",
-                    "/usr/local/include/edgetpu",
-                    "/usr/local/include/edgetpu/**",
-                    "/usr/include/torch",
-                    "/usr/include/torch/**"
+                    "/usr/local/include/libavformat/**",
+                    "/usr/local/include/libavcodec/**",
+                    "/usr/local/include/libavutil/**",
+                    "/usr/local/include/libswscale/**",
+                    "/usr/local/include/libswresample/**",
+                    "/usr/local/include/libavdevice/**",
+                    "/usr/local/include/libavfilter/**",
+                    "/usr/local/include/libpostproc/**"
                 ],
                 "C_Cpp.default.defines": [
                     "__ROVECOMM_LIBRARY_MODE__=1"
                 ],
-                // CMAKE extension settings.
                 "cmake.configureOnOpen": true,
                 "cmake.options.statusBarVisibility": "visible",
                 "cmake.parallelJobs": 8,
-                // Format Files extension settings.
                 "formatFiles.excludedFolders": [
                     "node_modules",
                     ".vscode",
@@ -134,7 +114,6 @@
                     ".devcontainer",
                     "README.md"
                 ],
-                // Doxygen Document Generator extension settings.
                 "doxdocgen.c.firstLine": "/******************************************************************************",
                 "doxdocgen.c.lastLine": "******************************************************************************/",
                 "doxdocgen.c.triggerSequence": "/**",
@@ -154,7 +133,6 @@
                 "doxdocgen.file.copyrightTag": [
                     "@copyright Copyright Mars Rover Design Team {year} - All Rights Reserved"
                 ],
-                // The order to use for the file comment.
                 "doxdocgen.file.fileOrder": [
                     "brief",
                     "empty",
@@ -164,7 +142,6 @@
                     "empty",
                     "copyright"
                 ],
-                // The order to use for the comment generation.
                 "doxdocgen.generic.order": [
                     "brief",
                     "empty",
@@ -175,11 +152,9 @@
                     "author",
                     "date"
                 ],
-                // Additional file documentation.
                 "doxdocgen.file.customTag": [],
                 "doxdocgen.generic.useGitUserEmail": true,
                 "doxdocgen.generic.useGitUserName": true,
-                // Todo Tree Extention Settings
                 "todo-tree.filtering.excludeGlobs": [
                     "**/CONTRIBUTING.md"
                 ],
@@ -269,7 +244,6 @@
                         "background": "#ccd514"
                     }
                 },
-                // Spell Checker Extension Settings.
                 "cSpell.customDictionaries": {
                     "project-words": {
                         "name": "RoveSoCameraServer-Project-Words",
@@ -277,8 +251,8 @@
                         "description": "Words used in the RoveSoCameraServer project",
                         "addWords": true
                     },
-                    "custom": true, // Enable the `custom` dictionary
-                    "internal-terms": false // Disable the `internal-terms` dictionary
+                    "custom": true,
+                    "internal-terms": false
                 }
             }
         }

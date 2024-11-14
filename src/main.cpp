@@ -136,16 +136,16 @@ int main()
     BasicCam* pMicroscope     = globals::g_pCameraHandler->GetBasicCam(CameraHandler::BasicCamName::eMicroscope);
 
     // Get Stream pointers.
-    StreamingHandler* pDriveCamLeftStream   = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eDriveCamLeft);
-    StreamingHandler* pDriveCamRightStream  = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eDriveCamRight);
-    StreamingHandler* pGimbalCamLeftStream  = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eGimbalCamLeft);
-    StreamingHandler* pGimbalCamRightStream = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eGimbalCamRight);
-    StreamingHandler* pBackCamStream        = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eBackCam);
-    StreamingHandler* pAuxCamera1Stream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eAuxCamera1);
-    StreamingHandler* pAuxCamera2Stream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eAuxCamera2);
-    StreamingHandler* pAuxCamera3Stream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eAuxCamera3);
-    StreamingHandler* pAuxCamera4Stream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eAuxCamera4);
-    StreamingHandler* pMicroscopeStream     = globals::g_pCameraHandler->GetStreamingHandler(CameraHandler::BasicCamName::eMicroscope);
+    FFmpegUDPCameraStreamer* pDriveCamLeftStream   = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eDriveCamLeft);
+    FFmpegUDPCameraStreamer* pDriveCamRightStream  = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eDriveCamRight);
+    FFmpegUDPCameraStreamer* pGimbalCamLeftStream  = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eGimbalCamLeft);
+    FFmpegUDPCameraStreamer* pGimbalCamRightStream = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eGimbalCamRight);
+    FFmpegUDPCameraStreamer* pBackCamStream        = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eBackCam);
+    FFmpegUDPCameraStreamer* pAuxCamera1Stream     = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eAuxCamera1);
+    FFmpegUDPCameraStreamer* pAuxCamera2Stream     = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eAuxCamera2);
+    FFmpegUDPCameraStreamer* pAuxCamera3Stream     = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eAuxCamera3);
+    FFmpegUDPCameraStreamer* pAuxCamera4Stream     = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eAuxCamera4);
+    FFmpegUDPCameraStreamer* pMicroscopeStream     = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eMicroscope);
 
     // Initialize the frame rate counter.
     IPS IterPerSecond = IPS();

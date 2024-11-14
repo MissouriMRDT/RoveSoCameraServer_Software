@@ -1,57 +1,57 @@
 /******************************************************************************
  * @brief
  *
- * @file StreamingHandler.cpp
+ * @file FFmpegUDPCameraStreamer.cpp
  * @author Eli Byrd (edbgkk@mst.edu)
  * @date 2024-11-10
  *
  * @copyright Copyright Mars Rover Design Team 2024 - All Rights Reserved
  ******************************************************************************/
 
-#include "StreamingHandler.h"
-#include "../RoveSoCameraServerLogging.h"
+#include "FFmpegUDPCameraStreamer.h"
+#include "../../RoveSoCameraServerLogging.h"
 
 /******************************************************************************
- * @brief Construct a new Streaming Handler:: Streaming Handler object.
+ * @brief Construct a new FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer object.
  *
- * @param pCamera -
- * @param outputBitRate -
- * @param maxBitRate -
- * @param bufferSize -
- * @param streamWidth -
- * @param streamHeight -
- * @param frameRate -
- * @param port -
- * @param brightness -
- * @param contrast -
- * @param saturation -
- * @param sharpness -
- * @param gamma -
- * @param gain -
- * @param exposure -
- * @param whiteBalance -
- * @param ipAddress -
+ * @param pCamera - An instance of a BasicCam object.
+ * @param ipAddress - The IP address to stream the camera feed to.
+ * @param port - The port to stream the camera feed to.
+ * @param outputBitRate - The output bitrate of the stream.
+ * @param maxBitRate - The maximum bitrate of the stream.
+ * @param bufferSize - The buffer size of the stream.
+ * @param streamWidth - The width of the stream.
+ * @param streamHeight - The height of the stream.
+ * @param frameRate - The frame rate of the stream.
+ * @param brightness - The brightness of the stream.
+ * @param contrast - The contrast of the stream.
+ * @param saturation - The saturation of the stream.
+ * @param sharpness - The sharpness of the stream.
+ * @param gamma - The gamma of the stream.
+ * @param gain - The gain of the stream.
+ * @param exposure - The exposure of the stream.
+ * @param whiteBalance - The white balance of the stream.
  *
  * @author Eli Byrd (edbgkk@mst.edu)
  * @date 2024-11-10
  ******************************************************************************/
-StreamingHandler::StreamingHandler(BasicCam* pCamera,
-                                   const std::string& ipAddress,
-                                   int port,
-                                   int outputBitRate,
-                                   int maxBitRate,
-                                   int bufferSize,
-                                   int streamWidth,
-                                   int streamHeight,
-                                   int frameRate,
-                                   double brightness,
-                                   double contrast,
-                                   double saturation,
-                                   double sharpness,
-                                   double gamma,
-                                   double gain,
-                                   double exposure,
-                                   double whiteBalance)
+FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
+                                                 const std::string& ipAddress,
+                                                 int port,
+                                                 int outputBitRate,
+                                                 int maxBitRate,
+                                                 int bufferSize,
+                                                 int streamWidth,
+                                                 int streamHeight,
+                                                 int frameRate,
+                                                 double brightness,
+                                                 double contrast,
+                                                 double saturation,
+                                                 double sharpness,
+                                                 double gamma,
+                                                 double gain,
+                                                 double exposure,
+                                                 double whiteBalance)
 {
     /////////////////////////////////////////
     // Variable Initialization
@@ -181,13 +181,13 @@ StreamingHandler::StreamingHandler(BasicCam* pCamera,
 }
 
 /******************************************************************************
- * @brief
- *
+ * @brief Capture a frame from the camera and stream it to the specified IP
+ *        address and port at the specified frame rate.
  *
  * @author Eli Byrd (edbgkk@mst.edu)
  * @date 2024-11-10
  ******************************************************************************/
-void StreamingHandler::ThreadedContinuousCode()
+void FFmpegUDPCameraStreamer::ThreadedContinuousCode()
 {
     cv::Mat cvNormalFrame1;
 
@@ -262,22 +262,20 @@ void StreamingHandler::ThreadedContinuousCode()
 }
 
 /******************************************************************************
- * @brief
- *
+ * @brief PooledLinearCode is not used in the FFmpegUDPCameraStreamer class.
  *
  * @author Eli Byrd (edbgkk@mst.edu)
  * @date 2024-11-10
  ******************************************************************************/
-void StreamingHandler::PooledLinearCode() {}
+void FFmpegUDPCameraStreamer::PooledLinearCode() {}
 
 /******************************************************************************
- * @brief Destroy the Streaming Handler:: Streaming Handler object.
- *
+ * @brief Destroy the FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer object.
  *
  * @author Eli Byrd (edbgkk@mst.edu)
  * @date 2024-11-10
  ******************************************************************************/
-StreamingHandler::~StreamingHandler()
+FFmpegUDPCameraStreamer::~FFmpegUDPCameraStreamer()
 {
     // Signal and wait for recording thread to stop.
     this->RequestStop();

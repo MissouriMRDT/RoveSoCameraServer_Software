@@ -12,8 +12,8 @@
 #define CAMERA_HANDLER_H
 
 #include "../vision/cameras/BasicCam.h"
+#include "../vision/streamers/FFmpegUDPCameraStreamer.h"
 #include "RecordingHandler.h"
-#include "StreamingHandler.h"
 
 /// \cond
 #include <opencv2/core.hpp>
@@ -47,16 +47,16 @@ class CameraHandler
         BasicCam* m_pAuxCamera4;
         BasicCam* m_pMicroscope;
         RecordingHandler* m_pRecordingHandler;
-        StreamingHandler* m_pDriveCamLeftStream;
-        StreamingHandler* m_pDriveCamRightStream;
-        StreamingHandler* m_pGimbalCamLeftStream;
-        StreamingHandler* m_pGimbalCamRightStream;
-        StreamingHandler* m_pBackCamStream;
-        StreamingHandler* m_pAuxCamera1Stream;
-        StreamingHandler* m_pAuxCamera2Stream;
-        StreamingHandler* m_pAuxCamera3Stream;
-        StreamingHandler* m_pAuxCamera4Stream;
-        StreamingHandler* m_pMicroscopeStream;
+        FFmpegUDPCameraStreamer* m_pDriveCamLeftStream;
+        FFmpegUDPCameraStreamer* m_pDriveCamRightStream;
+        FFmpegUDPCameraStreamer* m_pGimbalCamLeftStream;
+        FFmpegUDPCameraStreamer* m_pGimbalCamRightStream;
+        FFmpegUDPCameraStreamer* m_pBackCamStream;
+        FFmpegUDPCameraStreamer* m_pAuxCamera1Stream;
+        FFmpegUDPCameraStreamer* m_pAuxCamera2Stream;
+        FFmpegUDPCameraStreamer* m_pAuxCamera3Stream;
+        FFmpegUDPCameraStreamer* m_pAuxCamera4Stream;
+        FFmpegUDPCameraStreamer* m_pMicroscopeStream;
 
     public:
         /////////////////////////////////////////
@@ -135,7 +135,7 @@ class CameraHandler
         /////////////////////////////////////////
 
         BasicCam* GetBasicCam(BasicCamName eCameraName);
-        StreamingHandler* GetStreamingHandler(BasicCamName eCameraName);
+        FFmpegUDPCameraStreamer* GetFFmpegUDPCameraStreamer(BasicCamName eCameraName);
 };
 
 #endif    // CAMERA_HANDLER_H
