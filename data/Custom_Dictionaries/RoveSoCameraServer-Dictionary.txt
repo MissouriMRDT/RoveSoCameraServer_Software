@@ -140,6 +140,7 @@ MJPEG
 mpegts
 MRDT
 mrdtavoidance
+multicasting
 MULTIMEDIABOARD
 multithreads
 navboard
@@ -162,6 +163,7 @@ Parens
 pathplanners
 PIXELTYPE
 POSETRACK
+Raman
 rdparty
 reprojection
 RESOLUTIONX
@@ -182,12 +184,16 @@ Struct
 structs
 Styleguides
 superres
+Teleop
 threadpool
 timestamping
 timestep
 tparam
 twxs
+ublox
 UDPCAMERA
+Undervolt
+Undervoltage
 valgrind
 VIDEOWRITER
 Watchpoints
