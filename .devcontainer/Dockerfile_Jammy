@@ -73,7 +73,6 @@ RUN git clone --depth 1 --branch n${FFMPEG_VERSION} https://git.ffmpeg.org/ffmpe
     cd ffmpeg && \
     ./configure --enable-gpl --enable-libx264 && \
     make -j$(nproc) && \
-# Install FFmpeg
     make install && \
     cd .. && \
     rm -rf ffmpeg
@@ -105,8 +104,8 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8  
 
-# Clone Autonomy Software Repository
-RUN git clone --recurse-submodules -j8 https://github.com/MissouriMRDT/RoveSoCameraServer_Software.git
+# Clone RoveSoCameraServer_Software Repository
+RUN git clone --recurse-submodules -j8 https://github.com/MissouriMRDT/RoveSoCameraServer_Software.git  /opt/RoveSoCameraServer_Software
 
 # Set Working Directory
 WORKDIR /opt/RoveSoCameraServer_Software/
