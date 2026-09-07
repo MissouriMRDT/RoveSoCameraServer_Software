@@ -11,6 +11,11 @@
 #include "FFmpegUDPCameraStreamer.h"
 #include "../../RoveSoCameraServerLogging.h"
 
+extern "C"
+{
+#include <libavutil/error.h>
+}
+
 /******************************************************************************
  * @brief Construct a new FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer object.
  *
@@ -57,6 +62,14 @@ FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
     // Variable Initialization
     /////////////////////////////////////////
     m_pCamera           = pCamera;
+    m_pPacket           = nullptr;
+    m_swsCtx            = nullptr;
+    m_pFrameYUV         = nullptr;
+    m_pStream           = nullptr;
+    m_pCodecCtx         = nullptr;
+    m_pFormatCtx        = nullptr;
+    m_bInitialized      = false;
+    m_bHeaderWritten    = false;
 
     m_nOutputBitRate    = outputBitRate;
     m_nOutputMaxBitRate = maxBitRate;
@@ -79,14 +92,18 @@ FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
     m_szIPAddress       = ipAddress;
     m_szUDPAddress      = "udp://" + m_szIPAddress + ":" + std::to_string(m_nPort);
 
-    m_pPacket           = av_packet_alloc();
+    m_pPacket = av_packet_alloc();
+    if (!m_pPacket)
+    {
+        LOG_CRITICAL(logging::g_qSharedLogger, "Error: Could not allocate packet.");
+        return;
+    }
 
     /////////////////////////////////////////
     // FFmpeg setup
     /////////////////////////////////////////
     avformat_network_init();
 
-    m_pFormatCtx = nullptr;
     avformat_alloc_output_context2(&m_pFormatCtx, nullptr, "mpegts", m_szUDPAddress.c_str());
     if (!m_pFormatCtx)
     {
@@ -94,7 +111,7 @@ FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
         return;
     }
 
-    const AVCodec* pCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
+    const AVCodec* pCodec = avcodec_find_encoder_by_name("libx264");
     if (!pCodec)
     {
         LOG_CRITICAL(logging::g_qSharedLogger, "Error: Codec not found.");
@@ -115,6 +132,7 @@ FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
         return;
     }
 
+    m_pCodecCtx->codec_type   = AVMEDIA_TYPE_VIDEO;
     m_pCodecCtx->codec_id     = AV_CODEC_ID_H264;
     m_pCodecCtx->bit_rate     = m_nOutputBitRate;    // Use constant for bitrate
     m_pCodecCtx->width        = m_nStreamWidth;      // Use constant for video width
@@ -126,9 +144,12 @@ FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
     m_pCodecCtx->max_b_frames = 1;
     m_pCodecCtx->pix_fmt      = AV_PIX_FMT_YUV420P;
 
-    if (avcodec_open2(m_pCodecCtx, pCodec, nullptr) < 0)
+    const int nCodecOpenStatus = avcodec_open2(m_pCodecCtx, pCodec, nullptr);
+    if (nCodecOpenStatus < 0)
     {
-        LOG_CRITICAL(logging::g_qSharedLogger, "Error: Could not open codec.");
+        char szError[AV_ERROR_MAX_STRING_SIZE] = {};
+        av_strerror(nCodecOpenStatus, szError, sizeof(szError));
+        LOG_CRITICAL(logging::g_qSharedLogger, "Error: Could not open codec {}: {}", pCodec->name, szError);
         avcodec_free_context(&m_pCodecCtx);
         return;
     }
@@ -150,6 +171,7 @@ FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
         LOG_CRITICAL(logging::g_qSharedLogger, "Error: Failed to write header.");
         return;
     }
+    m_bHeaderWritten = true;
 
     m_swsCtx = sws_getContext(m_nStreamWidth,
                               m_nStreamHeight,
@@ -177,6 +199,7 @@ FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
         return;
     }
 
+    m_bInitialized = true;
     this->SetMainThreadIPSLimit(120);
 }
 
@@ -189,6 +212,12 @@ FFmpegUDPCameraStreamer::FFmpegUDPCameraStreamer(BasicCam* pCamera,
  ******************************************************************************/
 void FFmpegUDPCameraStreamer::ThreadedContinuousCode()
 {
+    if (!m_bInitialized || m_pCamera == nullptr || !m_pCamera->GetCameraIsOpen())
+    {
+        this->RequestStop();
+        return;
+    }
+
     cv::Mat cvNormalFrame1;
 
     std::future<bool> fuCopyStatus1 = m_pCamera->RequestFrameCopy(cvNormalFrame1);
@@ -281,10 +310,21 @@ FFmpegUDPCameraStreamer::~FFmpegUDPCameraStreamer()
     this->RequestStop();
     this->Join();
 
-    // Write trailer and clean up
-    av_write_trailer(m_pFormatCtx);
+    // Write trailer and clean up any resources that were successfully allocated.
+    if (m_bHeaderWritten && m_pFormatCtx != nullptr)
+    {
+        av_write_trailer(m_pFormatCtx);
+    }
+    if (m_pFormatCtx != nullptr && m_pFormatCtx->pb != nullptr)
+    {
+        avio_closep(&m_pFormatCtx->pb);
+    }
     av_packet_free(&m_pPacket);
     avcodec_free_context(&m_pCodecCtx);
+    if (m_pFrameYUV != nullptr && m_pFrameYUV->data[0] != nullptr)
+    {
+        av_freep(&m_pFrameYUV->data[0]);
+    }
     av_frame_free(&m_pFrameYUV);
     sws_freeContext(m_swsCtx);
     avformat_free_context(m_pFormatCtx);

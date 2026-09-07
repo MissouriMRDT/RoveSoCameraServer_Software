@@ -146,6 +146,7 @@ int main()
     FFmpegUDPCameraStreamer* pAuxCamera3Stream     = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eAuxCamera3);
     FFmpegUDPCameraStreamer* pAuxCamera4Stream     = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eAuxCamera4);
     FFmpegUDPCameraStreamer* pMicroscopeStream     = globals::g_pCameraHandler->GetFFmpegUDPCameraStreamer(CameraHandler::BasicCamName::eMicroscope);
+    auto getStreamIPS = [](FFmpegUDPCameraStreamer* pStream) { return pStream != nullptr ? pStream->GetIPS().GetExactIPS() : 0.0; };
 
     // Initialize the frame rate counter.
     IPS IterPerSecond = IPS();
@@ -173,16 +174,16 @@ int main()
         szMainInfo += "AuxCamera4 FPS: " + std::to_string(pAuxCamera4->GetIPS().GetExactIPS()) + "\n";
         szMainInfo += "Microscope FPS: " + std::to_string(pMicroscope->GetIPS().GetExactIPS()) + "\n";
         szMainInfo += "\n--------[ Streaming FPS ]--------\n";
-        szMainInfo += "DriveCamLeft Stream FPS: " + std::to_string(pDriveCamLeftStream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "DriveCamRight Stream FPS: " + std::to_string(pDriveCamRightStream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "GimbalCamLeft Stream FPS: " + std::to_string(pGimbalCamLeftStream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "GimbalCamRight Stream FPS: " + std::to_string(pGimbalCamRightStream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "BackCam Stream FPS: " + std::to_string(pBackCamStream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "AuxCamera1 Stream FPS: " + std::to_string(pAuxCamera1Stream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "AuxCamera2 Stream FPS: " + std::to_string(pAuxCamera2Stream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "AuxCamera3 Stream FPS: " + std::to_string(pAuxCamera3Stream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "AuxCamera4 Stream FPS: " + std::to_string(pAuxCamera4Stream->GetIPS().GetExactIPS()) + "\n";
-        szMainInfo += "Microscope Stream FPS: " + std::to_string(pMicroscopeStream->GetIPS().GetExactIPS()) + "\n";
+        szMainInfo += "DriveCamLeft Stream FPS: " + std::to_string(getStreamIPS(pDriveCamLeftStream)) + "\n";
+        szMainInfo += "DriveCamRight Stream FPS: " + std::to_string(getStreamIPS(pDriveCamRightStream)) + "\n";
+        szMainInfo += "GimbalCamLeft Stream FPS: " + std::to_string(getStreamIPS(pGimbalCamLeftStream)) + "\n";
+        szMainInfo += "GimbalCamRight Stream FPS: " + std::to_string(getStreamIPS(pGimbalCamRightStream)) + "\n";
+        szMainInfo += "BackCam Stream FPS: " + std::to_string(getStreamIPS(pBackCamStream)) + "\n";
+        szMainInfo += "AuxCamera1 Stream FPS: " + std::to_string(getStreamIPS(pAuxCamera1Stream)) + "\n";
+        szMainInfo += "AuxCamera2 Stream FPS: " + std::to_string(getStreamIPS(pAuxCamera2Stream)) + "\n";
+        szMainInfo += "AuxCamera3 Stream FPS: " + std::to_string(getStreamIPS(pAuxCamera3Stream)) + "\n";
+        szMainInfo += "AuxCamera4 Stream FPS: " + std::to_string(getStreamIPS(pAuxCamera4Stream)) + "\n";
+        szMainInfo += "Microscope Stream FPS: " + std::to_string(getStreamIPS(pMicroscopeStream)) + "\n";
         szMainInfo += "\n--------[ RoveComm FPS ]--------\n";
         szMainInfo += "RoveCommUDP FPS: " + std::to_string(network::g_pRoveCommTCPNode->GetIPS().GetExactIPS()) + "\n";
         szMainInfo += "RoveCommTCP FPS: " + std::to_string(network::g_pRoveCommTCPNode->GetIPS().GetExactIPS()) + "\n";

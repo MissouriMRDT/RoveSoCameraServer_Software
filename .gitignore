@@ -5,6 +5,7 @@
 valgrind.rpt
 *temp*/
 *external*/*ffmpeg*/
+media
 
 # Compiled Program
 RoveSoCameraServer

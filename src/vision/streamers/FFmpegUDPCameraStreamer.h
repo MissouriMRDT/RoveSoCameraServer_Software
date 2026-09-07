@@ -62,6 +62,8 @@ class FFmpegUDPCameraStreamer : public AutonomyThread<void>
         AVStream* m_pStream;
         AVCodecContext* m_pCodecCtx;
         AVFormatContext* m_pFormatCtx;
+        bool m_bInitialized;
+        bool m_bHeaderWritten;
 
         void ThreadedContinuousCode() override;
 

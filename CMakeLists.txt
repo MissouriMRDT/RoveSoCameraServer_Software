@@ -132,6 +132,21 @@ add_compile_definitions(__ROVECOMM_LIBRARY_MODE__=1)
 ## Find Threads
 find_package(Threads REQUIRED)
 
+## Find FFmpeg through pkg-config.
+find_package(PkgConfig REQUIRED)
+if (UNIX AND NOT APPLE)
+    set(ENV{PKG_CONFIG_LIBDIR} "/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}/pkgconfig:/usr/share/pkgconfig")
+endif()
+pkg_check_modules(FFMPEG REQUIRED IMPORTED_TARGET
+                  libavformat
+                  libavcodec
+                  libavutil
+                  libswscale
+                  libswresample
+                  libavdevice
+                  libavfilter
+                  libpostproc)
+
 ## Find Quill
 find_package(quill REQUIRED)
 
@@ -181,6 +196,17 @@ if (MSVC)
     target_compile_options(${EXE_NAME} PRIVATE /W4 /WX)
 else()
     target_compile_options(${EXE_NAME} PRIVATE -Wall -Wextra -Wpedantic)
+    # Prefer the system FFmpeg headers, which match the libraries selected by pkg-config.
+    target_compile_options(${EXE_NAME} PRIVATE
+                           -nostdinc
+                           -I/usr/include/x86_64-linux-gnu
+                           "SHELL:-isystem /usr/include/c++/13"
+                           "SHELL:-isystem /usr/include/x86_64-linux-gnu/c++/13"
+                           "SHELL:-isystem /usr/include/c++/13/backward"
+                           "SHELL:-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include"
+                           "SHELL:-isystem /usr/include/x86_64-linux-gnu"
+                           "SHELL:-isystem /usr/local/include"
+                           "SHELL:-isystem /usr/include")
 endif()
 
 ## Link Libraries
@@ -190,21 +216,7 @@ set(ROVESOCAMERASERVER_LIBRARIES  Threads::Threads
                                   quill::quill
                                   ${OpenCV_LIBS}
 )
-set(FFMPEG_LIB_DIR /usr/local/lib)
-set(FFMPEG_LIBS
-    ${FFMPEG_LIB_DIR}/libavformat.a
-    ${FFMPEG_LIB_DIR}/libavcodec.a
-    ${FFMPEG_LIB_DIR}/libavutil.a
-    ${FFMPEG_LIB_DIR}/libswscale.a
-    ${FFMPEG_LIB_DIR}/libswresample.a
-    ${FFMPEG_LIB_DIR}/libavdevice.a
-    ${FFMPEG_LIB_DIR}/libavfilter.a
-    ${FFMPEG_LIB_DIR}/libpostproc.a
-)
-
-set(ADDITIONAL_LIBS -lz -lm -lpthread -lx264 -ldl -lX11 -llzma -ldrm)
-
-target_link_libraries(${EXE_NAME} PRIVATE ${ROVESOCAMERASERVER_LIBRARIES} ${FFMPEG_LIBS} ${ADDITIONAL_LIBS})
+target_link_libraries(${EXE_NAME} PRIVATE ${ROVESOCAMERASERVER_LIBRARIES} PkgConfig::FFMPEG)
 
 
 ####################################################################################################################

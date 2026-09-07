@@ -133,16 +133,16 @@ CameraHandler::CameraHandler()
     m_pRecordingHandler = new RecordingHandler(RecordingHandler::RecordingMode::eCameraHandler);
 
     // Initialize streaming handlers for cameras.
-    m_pDriveCamLeftStream   = new FFmpegUDPCameraStreamer(m_pDriveCamLeft, "239.0.0.1", 50000);
-    m_pDriveCamRightStream  = new FFmpegUDPCameraStreamer(m_pDriveCamRight, "239.0.0.2", 50000);
-    m_pGimbalCamLeftStream  = new FFmpegUDPCameraStreamer(m_pGimbalCamLeft, "239.0.0.3", 50000);
-    m_pGimbalCamRightStream = new FFmpegUDPCameraStreamer(m_pGimbalCamRight, "239.0.0.4", 50000);
-    m_pBackCamStream        = new FFmpegUDPCameraStreamer(m_pBackCam, "239.0.0.5", 50000);
-    m_pAuxCamera1Stream     = new FFmpegUDPCameraStreamer(m_pAuxCamera1, "239.0.0.6", 50000);
-    m_pAuxCamera2Stream     = new FFmpegUDPCameraStreamer(m_pAuxCamera2, "239.0.0.7", 50000);
-    m_pAuxCamera3Stream     = new FFmpegUDPCameraStreamer(m_pAuxCamera3, "239.0.0.8", 50000);
-    m_pAuxCamera4Stream     = new FFmpegUDPCameraStreamer(m_pAuxCamera4, "239.0.0.9", 50000);
-    m_pMicroscopeStream     = new FFmpegUDPCameraStreamer(m_pMicroscope, "239.0.0.10", 50000);
+    m_pDriveCamLeftStream   = m_pDriveCamLeft->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pDriveCamLeft, "239.0.0.1", 50000) : nullptr;
+    m_pDriveCamRightStream  = m_pDriveCamRight->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pDriveCamRight, "239.0.0.2", 50000) : nullptr;
+    m_pGimbalCamLeftStream  = m_pGimbalCamLeft->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pGimbalCamLeft, "239.0.0.3", 50000) : nullptr;
+    m_pGimbalCamRightStream = m_pGimbalCamRight->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pGimbalCamRight, "239.0.0.4", 50000) : nullptr;
+    m_pBackCamStream        = m_pBackCam->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pBackCam, "239.0.0.5", 50000) : nullptr;
+    m_pAuxCamera1Stream     = m_pAuxCamera1->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pAuxCamera1, "239.0.0.6", 50000) : nullptr;
+    m_pAuxCamera2Stream     = m_pAuxCamera2->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pAuxCamera2, "239.0.0.7", 50000) : nullptr;
+    m_pAuxCamera3Stream     = m_pAuxCamera3->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pAuxCamera3, "239.0.0.8", 50000) : nullptr;
+    m_pAuxCamera4Stream     = m_pAuxCamera4->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pAuxCamera4, "239.0.0.9", 50000) : nullptr;
+    m_pMicroscopeStream     = m_pMicroscope->GetCameraIsOpen() ? new FFmpegUDPCameraStreamer(m_pMicroscope, "239.0.0.10", 50000) : nullptr;
 }
 
 /******************************************************************************
@@ -305,43 +305,43 @@ void CameraHandler::StartStreaming(bool bDriveCamLeft,
                                    bool bMicroscope)
 {
     // Start streaming handlers.
-    if (bDriveCamLeft)
+    if (bDriveCamLeft && m_pDriveCamLeftStream != nullptr)
     {
         m_pDriveCamLeftStream->Start();
     }
-    if (bDriveCamRight)
+    if (bDriveCamRight && m_pDriveCamRightStream != nullptr)
     {
         m_pDriveCamRightStream->Start();
     }
-    if (bGimbalCamLeft)
+    if (bGimbalCamLeft && m_pGimbalCamLeftStream != nullptr)
     {
         m_pGimbalCamLeftStream->Start();
     }
-    if (bGimbalCamRight)
+    if (bGimbalCamRight && m_pGimbalCamRightStream != nullptr)
     {
         m_pGimbalCamRightStream->Start();
     }
-    if (bBackCam)
+    if (bBackCam && m_pBackCamStream != nullptr)
     {
         m_pBackCamStream->Start();
     }
-    if (bAuxCamera1)
+    if (bAuxCamera1 && m_pAuxCamera1Stream != nullptr)
     {
         m_pAuxCamera1Stream->Start();
     }
-    if (bAuxCamera2)
+    if (bAuxCamera2 && m_pAuxCamera2Stream != nullptr)
     {
         m_pAuxCamera2Stream->Start();
     }
-    if (bAuxCamera3)
+    if (bAuxCamera3 && m_pAuxCamera3Stream != nullptr)
     {
         m_pAuxCamera3Stream->Start();
     }
-    if (bAuxCamera4)
+    if (bAuxCamera4 && m_pAuxCamera4Stream != nullptr)
     {
         m_pAuxCamera4Stream->Start();
     }
-    if (bMicroscope)
+    if (bMicroscope && m_pMicroscopeStream != nullptr)
     {
         m_pMicroscopeStream->Start();
     }
@@ -453,52 +453,52 @@ void CameraHandler::StopStreaming(bool bDriveCamLeft,
                                   bool bMicroscope)
 {
     // Stop streaming handlers.
-    if (bDriveCamLeft)
+    if (bDriveCamLeft && m_pDriveCamLeftStream != nullptr)
     {
         m_pDriveCamLeftStream->RequestStop();
         m_pDriveCamLeftStream->Join();
     }
-    if (bDriveCamRight)
+    if (bDriveCamRight && m_pDriveCamRightStream != nullptr)
     {
         m_pDriveCamRightStream->RequestStop();
         m_pDriveCamRightStream->Join();
     }
-    if (bGimbalCamLeft)
+    if (bGimbalCamLeft && m_pGimbalCamLeftStream != nullptr)
     {
         m_pGimbalCamLeftStream->RequestStop();
         m_pGimbalCamLeftStream->Join();
     }
-    if (bGimbalCamRight)
+    if (bGimbalCamRight && m_pGimbalCamRightStream != nullptr)
     {
         m_pGimbalCamRightStream->RequestStop();
         m_pGimbalCamRightStream->Join();
     }
-    if (bBackCam)
+    if (bBackCam && m_pBackCamStream != nullptr)
     {
         m_pBackCamStream->RequestStop();
         m_pBackCamStream->Join();
     }
-    if (bAuxCamera1)
+    if (bAuxCamera1 && m_pAuxCamera1Stream != nullptr)
     {
         m_pAuxCamera1Stream->RequestStop();
         m_pAuxCamera1Stream->Join();
     }
-    if (bAuxCamera2)
+    if (bAuxCamera2 && m_pAuxCamera2Stream != nullptr)
     {
         m_pAuxCamera2Stream->RequestStop();
         m_pAuxCamera2Stream->Join();
     }
-    if (bAuxCamera3)
+    if (bAuxCamera3 && m_pAuxCamera3Stream != nullptr)
     {
         m_pAuxCamera3Stream->RequestStop();
         m_pAuxCamera3Stream->Join();
     }
-    if (bAuxCamera4)
+    if (bAuxCamera4 && m_pAuxCamera4Stream != nullptr)
     {
         m_pAuxCamera4Stream->RequestStop();
         m_pAuxCamera4Stream->Join();
     }
-    if (bMicroscope)
+    if (bMicroscope && m_pMicroscopeStream != nullptr)
     {
         m_pMicroscopeStream->RequestStop();
         m_pMicroscopeStream->Join();
